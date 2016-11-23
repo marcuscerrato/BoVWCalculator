@@ -91,7 +91,7 @@ public class BoVWCalculator
 		{
 			System.out.println("Processing shot " + shotn);
 			//Print shot number
-			bovwWriter.write(shotn++ + " ");
+			bovwWriter.write(Integer.toString(shotn++));
 			
 			//Variable quantisedFeatures assign a cluster label between [1..k] to each feature vector from the list 
 			List<QuantisedLocalFeature<KeypointLocation>> quantisedFeatures = BagOfVisualWords.computeQuantisedFeatures(hardAssigner, shot.getSiftKeypointList());
@@ -100,7 +100,7 @@ public class BoVWCalculator
 			SparseIntFV features = BagOfVisualWords.extractFeatureFromQuantised(quantisedFeatures, k);
 			for(int i = 0; i < features.length(); i++)
 			{
-				bovwWriter.write(features.getVector().get(i) + " ");
+				bovwWriter.write(" " + features.getVector().get(i));
 			}
 			bovwWriter.write("\n");			
 		}
