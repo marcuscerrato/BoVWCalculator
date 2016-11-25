@@ -31,10 +31,6 @@ public class BoVWCalculator
 	
     public static void main( String[] args ) throws Exception 
     {    	
-    	if(args[2] != null)
-    	{
-    		k = Integer.parseInt(args[2]);
-    	}
     	//Read SIFT features from CSV file.
     	CSVReader featureReader = new CSVReader(new FileReader(args[0]), ' ');
 		String [] line;
@@ -105,6 +101,23 @@ public class BoVWCalculator
 			bovwWriter.write("\n");			
 		}
 		bovwWriter.close();
+		
+		//Print visual words to file
+		FileWriter vwWriter = new FileWriter(args[2]);
+		for(int i = 0; i < centroids.numClusters(); i++)
+		{
+			for(int j = 0; j < centroids.numDimensions(); j++)
+			{
+				if(j < centroids.numDimensions() - 1)
+				{
+					vwWriter.write(centroids.getCentroids()[i][j] + " ");
+				}else
+				{
+					vwWriter.write(centroids.getCentroids()[i][j] + "\n");
+				}
+			}
+		}
+		vwWriter.close();
     }
 }
 
