@@ -27,7 +27,7 @@ import TVSSUnits.ShotList;
 public class BoVWCalculator 
 {
 	
-	private static int k = 20;
+	private static int k = 15;
 	private static int clusteringSteps = 50;
 	
     public static void main( String[] args ) throws Exception 
