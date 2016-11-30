@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.openimaj.data.DataSource;
+import org.openimaj.feature.DoubleFVComparison;
 import org.openimaj.feature.SparseIntFV;
 import org.openimaj.feature.local.data.LocalFeatureListDataSource;
 import org.openimaj.feature.local.list.LocalFeatureList;
@@ -14,6 +15,7 @@ import org.openimaj.feature.local.quantised.QuantisedLocalFeature;
 import org.openimaj.image.feature.local.aggregate.BagOfVisualWords;
 import org.openimaj.image.feature.local.keypoints.Keypoint;
 import org.openimaj.image.feature.local.keypoints.KeypointLocation;
+import org.openimaj.math.statistics.distribution.Histogram;
 import org.openimaj.ml.clustering.ByteCentroidsResult;
 import org.openimaj.ml.clustering.assignment.HardAssigner;
 import org.openimaj.ml.clustering.kmeans.ByteKMeans;
@@ -27,7 +29,7 @@ import TVSSUnits.ShotList;
 public class BoVWCalculator 
 {
 	
-	private static int k = 20;
+	private static int k = 500;
 	private static int clusteringSteps = 50;
 	
     public static void main( String[] args ) throws Exception 
@@ -95,6 +97,13 @@ public class BoVWCalculator
 
 			//Create the visual word ocurrence histogram
 			SparseIntFV features = BagOfVisualWords.extractFeatureFromQuantised(quantisedFeatures, k);
+			
+			//Set shot feature histogram for use in intershot distance
+			Histogram featureHistogram = new Histogram(features.asDoubleVector());
+			featureHistogram = new Histogram(featureHistogram.normaliseFV());
+			shot.setFeatureWordHistogram(featureHistogram);
+			
+			
 			for(int i = 0; i < features.length(); i++)
 			{
 				bovwWriter.write(" " + features.getVector().get(i));
@@ -119,6 +128,14 @@ public class BoVWCalculator
 			}
 		}
 		vwWriter.close();
+		
+		//Print intershot distances
+		for(int i = 0; i < (shotList.listSize() - 1); i++)
+		{
+			double intershotDist = shotList.getShot(i).getFeatureWordHistogram().compare(shotList.getShot(i + 1).getFeatureWordHistogram(), 
+					DoubleFVComparison.COSINE_SIM);
+			System.out.println("Sim " +  i + "/" + (i + 1) + ": " + intershotDist);
+		}
     }
 }
 
