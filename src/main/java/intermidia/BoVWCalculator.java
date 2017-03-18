@@ -45,7 +45,7 @@ public class BoVWCalculator
 		//Build shot list with SIFT keypoints
 		while ((line = featureReader.readNext()) != null) 
 		{
-			int currentShot = Byte.parseByte(line[0]);
+			int currentShot = Integer.parseInt(line[0]);
 			//It must be a while because there can be shots without keypoints
 			while(currentShot != lastShot)
 			{
