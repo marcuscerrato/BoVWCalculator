@@ -32,6 +32,7 @@ public class BoVWCalculator
 	private static int k = 500;
 	private static int clusteringSteps = 50;
 	
+	//Usage: <in: keypoints> <out: visual histograms> <in: k> <in: clustering steps>
     public static void main( String[] args ) throws Exception 
     {    	
     	//Read SIFT features from CSV file.
@@ -39,6 +40,16 @@ public class BoVWCalculator
 		String [] line;
 		ShotList shotList = new ShotList();
 		int lastShot = -1;
+		
+		/*Set k and maximum clustering steps*/
+		if(args.length > 2)
+		{
+			k = Integer.parseInt(args[2]);
+		}
+		if(args.length > 3)
+		{
+			clusteringSteps = Integer.parseInt(args[3]);
+		}
 		
 		
 		
@@ -113,7 +124,7 @@ public class BoVWCalculator
 		bovwWriter.close();
 		
 		//Print visual words to file
-		FileWriter vwWriter = new FileWriter(args[2]);
+		/*FileWriter vwWriter = new FileWriter(args[2]);
 		for(int i = 0; i < centroids.numClusters(); i++)
 		{
 			for(int j = 0; j < centroids.numDimensions(); j++)
@@ -127,7 +138,7 @@ public class BoVWCalculator
 				}
 			}
 		}
-		vwWriter.close();
+		vwWriter.close();*/
 		
 		//Print intershot distances
 		for(int i = 0; i < (shotList.listSize() - 1); i++)
