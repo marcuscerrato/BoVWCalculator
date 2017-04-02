@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.openimaj.data.DataSource;
-import org.openimaj.feature.DoubleFVComparison;
 import org.openimaj.feature.SparseIntFV;
 import org.openimaj.feature.local.data.LocalFeatureListDataSource;
 import org.openimaj.feature.local.list.LocalFeatureList;
@@ -86,7 +85,7 @@ public class BoVWCalculator
 		DataSource<byte []> kmeansDataSource = new LocalFeatureListDataSource<Keypoint, byte[]>(videoKeypoints);
 		ByteKMeans clusterer = ByteKMeans.createExact(k, clusteringSteps);
 		//$centroids have size $k, and each vector have 128 bytes
-		System.out.println("Clustering SIFT Keypoints into "+ k + " visual words.");
+		//System.out.println("Clustering SIFT Keypoints into "+ k + " visual words.");
 		ByteCentroidsResult centroids = clusterer.cluster(kmeansDataSource);
 		
 		
@@ -99,7 +98,7 @@ public class BoVWCalculator
 		FileWriter bovwWriter = new FileWriter(args[1]);
 		for(Shot shot: shotList.getList())
 		{
-			System.out.println("Processing shot " + shotn);
+			//System.out.println("Processing shot " + shotn);
 			//Print shot number
 			bovwWriter.write(Integer.toString(shotn++));
 			
@@ -141,12 +140,12 @@ public class BoVWCalculator
 		vwWriter.close();*/
 		
 		//Print intershot distances
-		for(int i = 0; i < (shotList.listSize() - 1); i++)
+/*		for(int i = 0; i < (shotList.listSize() - 1); i++)
 		{
 			double intershotDist = shotList.getShot(i).getFeatureWordHistogram().compare(shotList.getShot(i + 1).getFeatureWordHistogram(), 
 					DoubleFVComparison.COSINE_SIM);
 			System.out.println("Sim " +  i + "/" + (i + 1) + ": " + intershotDist);
-		}
+		}*/
     }
 }
 
